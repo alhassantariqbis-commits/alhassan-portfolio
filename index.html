@@ -87,11 +87,14 @@ html,body{overflow-x:clip}
 
 .mob-only,.mob-press{display:none}
 @media (hover: none) and (pointer: coarse), (max-width: 767px){
-.mob-only{display:block}
-#reel-scrub-video,#reel-bg-video{display:none!important}
+html:not(.reel-fallback) .mob-only{display:block}
+html:not(.reel-fallback) #reel-scrub-video,html:not(.reel-fallback) #reel-bg-video{display:none!important}
 #reel-mob-canvas{position:absolute;inset:0;width:100%;height:100%;background:#380E05}
 #reel-mob-bg{position:absolute;top:-40px;left:-40px;width:calc(100% + 80px);height:calc(100% + 80px);filter:blur(18px) saturate(1.15);transform:translateZ(0)}
-.logo-track{animation:none!important;will-change:transform}
+.logo-track{zoom:0.66;animation-duration:42s!important}
+.logo-strip{padding:14px 0!important}
+.logo-strip>span{font-size:10px!important;padding-right:16px!important}
+.logo-strip:hover .logo-track{animation-play-state:running}
 .ai-hint{display:none!important}
 #work article a[class$="-flip"] [class*="-frame"]{animation:none!important;opacity:0!important}
 #work article a[class$="-flip"] [class*="-frame"].on{opacity:1!important}
@@ -197,7 +200,7 @@ article.mob-on a[href^="Project-"]:not([aria-label]){padding-left:14px}
 <span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase">(2026) ↓ Scroll to play</span>
 </div>
 <div id="reel-frame" style="position: relative; align-self: center; width: min(100%, calc((100vh - 240px) * 16 / 9)); aspect-ratio: 16 / 9; clip-path: inset(14% 22% round 16px); will-change: clip-path; background: #000000; box-shadow: 0 0 0 1px rgba(215, 217, 197, 0.25)">
-<canvas id="reel-mob-canvas" class="mob-only" aria-hidden="true" data-frames="video/showreel-poster.jpg,frames/reel/r02.jpg,frames/reel/r03.jpg,frames/reel/r04.jpg,frames/reel/r05.jpg,frames/reel/r06.jpg,frames/reel/r07.jpg,frames/reel/r08.jpg,frames/reel/r09.jpg,frames/reel/r10.jpg,frames/reel/r11.jpg,frames/reel/r12.jpg,frames/reel/r13.jpg,frames/reel/r14.jpg,frames/reel/r15.jpg,frames/reel/r16.jpg,frames/reel/r17.jpg,frames/reel/r18.jpg,frames/reel/r19.jpg,frames/reel/r20.jpg,frames/reel/r21.jpg,frames/reel/r22.jpg,frames/reel/r23.jpg,frames/reel/r24.jpg,frames/reel/r25.jpg,frames/reel/r26.jpg,frames/reel/r27.jpg,frames/reel/r28.jpg,frames/reel/r29.jpg,frames/reel/r30.jpg,frames/reel/r31.jpg,frames/reel/r32.jpg,frames/reel/r33.jpg,frames/reel/r34.jpg,frames/reel/r35.jpg,frames/reel/r36.jpg,frames/reel/r37.jpg,frames/reel/r38.jpg,frames/reel/r39.jpg,frames/reel/r40.jpg,frames/reel/r41.jpg,frames/reel/r42.jpg,frames/reel/r43.jpg,frames/reel/r44.jpg,frames/reel/r45.jpg,frames/reel/r46.jpg,frames/reel/r47.jpg,frames/reel/r48.jpg,frames/reel/r49.jpg,frames/reel/r50.jpg,frames/reel/r51.jpg,frames/reel/r52.jpg,frames/reel/r53.jpg,frames/reel/r54.jpg,frames/reel/r55.jpg,frames/reel/r56.jpg,frames/reel/r57.jpg,frames/reel/r58.jpg,frames/reel/r59.jpg,frames/reel/r60.jpg,frames/reel/r61.jpg,frames/reel/r62.jpg,frames/reel/r63.jpg,frames/reel/r64.jpg,frames/reel/r65.jpg,frames/reel/r66.jpg,frames/reel/r67.jpg,frames/reel/r68.jpg,frames/reel/r69.jpg,frames/reel/r70.jpg,frames/reel/r71.jpg,frames/reel/r72.jpg,frames/reel/r73.jpg,frames/reel/r74.jpg,frames/reel/r75.jpg,frames/reel/r76.jpg,frames/reel/r77.jpg,frames/reel/r78.jpg,frames/reel/r79.jpg,frames/reel/r80.jpg,frames/reel/r81.jpg,frames/reel/r82.jpg,frames/reel/r83.jpg,frames/reel/r84.jpg,frames/reel/r85.jpg,frames/reel/r86.jpg,frames/reel/r87.jpg,frames/reel/r88.jpg,frames/reel/r89.jpg,frames/reel/r90.jpg,frames/reel/r91.jpg,frames/reel/r92.jpg,frames/reel/r93.jpg,frames/reel/r94.jpg,frames/reel/r95.jpg,frames/reel/r96.jpg"></canvas>
+<canvas id="reel-mob-canvas" class="mob-only" aria-hidden="true" data-sprites="reel-1.jpg,reel-2.jpg,reel-3.jpg,reel-4.jpg"></canvas>
 <div id="reel-scrub-layer">
 <video id="reel-scrub-video" src="video/showreel-scroll.mp4" poster="video/showreel-poster.jpg" muted="" playsinline="" preload="auto" aria-label="Showreel intro, plays as you scroll" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none"></video>
 <div id="reel-cta" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 24px; box-sizing: border-box; text-align: center; transition: opacity 0.45s ease, transform 0.45s ease; opacity: 0; transform: translateY(16px); pointer-events: none">
@@ -454,56 +457,57 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 function byId(i) { return document.getElementById(i); }
 
-/* stop the two scrub videos from downloading or seeking on phones */
-['reel-scrub-video', 'reel-bg-video'].forEach(function (id) {
-var v = byId(id); if (!v) return;
-try { v.pause(); v.preload = 'none'; v.removeAttribute('src'); v.load(); } catch (e) {}
-});
-
-/* showreel: image sequence drawn to canvas */
+/* showreel: frames packed in sprite sheets, drawn to canvas; falls back to the video if sheets fail */
 var cv = byId('reel-mob-canvas'), bg = byId('reel-mob-bg'), wrap = byId('reel-scrub-wrap');
-var urls = cv && cv.getAttribute('data-frames') ? cv.getAttribute('data-frames').split(',') : [];
-var N = urls.length, imgs = [], ok = [], cur = -1, want = 0;
+var vids = ['reel-scrub-video', 'reel-bg-video'].map(byId).filter(Boolean);
+vids.forEach(function (v) { try { v.pause(); v.preload = 'none'; } catch (e) {} });
+var sheets = cv && cv.getAttribute('data-sprites') ? cv.getAttribute('data-sprites').split(',') : [];
+var COLS = 6, ROWS = 4, PER = COLS * ROWS, N = sheets.length * PER, FW = 720, FH = 405;
+var simg = [], sok = [], cur = -1, want = 0, failed = false, gotOne = false;
 var ctx = cv ? cv.getContext('2d') : null, bctx = bg ? bg.getContext('2d') : null;
-function nearest(i) { for (var d = 0; d < N; d++) { if (ok[i - d]) return i - d; if (ok[i + d]) return i + d; } return -1; }
+function fallback() {
+if (failed || gotOne) return; failed = true; N = 0;
+window.__alhMob = false;
+document.documentElement.classList.add('reel-fallback');
+vids.forEach(function (v) { try { v.preload = 'auto'; v.load(); var p = v.play(); if (p && p.then) p.then(function () { v.pause(); window.dispatchEvent(new Event('scroll')); }).catch(function () {}); } catch (e) {} });
+}
+function has(j) { return j >= 0 && j < N && sok[Math.floor(j / PER)]; }
+function nearest(i) { for (var d = 0; d < N; d++) { if (has(i - d)) return i - d; if (has(i + d)) return i + d; } return -1; }
 function fit() {
 if (!cv) return;
 var dpr = Math.min(window.devicePixelRatio || 1, 2);
 var w = Math.round(cv.clientWidth * dpr), h = Math.round(cv.clientHeight * dpr);
 if (w && h && (cv.width !== w || cv.height !== h)) { cv.width = w; cv.height = h; cur = -1; }
 }
-function cover(c, im) {
-var cw = c.canvas.width, ch = c.canvas.height, iw = im.naturalWidth, ih = im.naturalHeight;
-if (!cw || !ch || !iw || !ih) return;
-var s = Math.max(cw / iw, ch / ih), w = iw * s, h = ih * s;
-c.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h);
+function paint(c, j) {
+var im = simg[Math.floor(j / PER)], k = j % PER;
+var sx = (k % COLS) * FW, sy = Math.floor(k / COLS) * FH;
+var cw = c.canvas.width, ch = c.canvas.height; if (!cw || !ch) return;
+var s = Math.max(cw / FW, ch / FH), w = FW * s, h = FH * s;
+c.drawImage(im, sx, sy, FW, FH, (cw - w) / 2, (ch - h) / 2, w, h);
 }
 function draw() {
 if (!ctx || !N) return;
 var j = nearest(want); if (j < 0 || j === cur) return;
-cur = j; cover(ctx, imgs[j]); if (bctx) cover(bctx, imgs[j]);
+cur = j; paint(ctx, j); if (bctx) paint(bctx, j);
 }
-if (N) {
-var order = [0, N - 1], seen = {}; seen[0] = seen[N - 1] = 1;
-[16, 8, 4, 2, 1].forEach(function (st) { for (var i = 0; i < N; i += st) if (!seen[i]) { seen[i] = 1; order.push(i); } });
-var next = 0, active = 0;
-function pump() {
-while (active < 4 && next < order.length) {
-(function (i) {
-active++; var im = new Image(); im.decoding = 'async';
-im.onload = function () { ok[i] = true; active--; if (Math.abs(i - want) <= Math.abs(cur - want) || cur < 0) draw(); pump(); };
-im.onerror = function () { active--; pump(); };
-im.src = urls[i]; imgs[i] = im;
-})(order[next++]);
-}
-}
-pump();
-}
+if (sheets.length && ctx) {
+[0, sheets.length - 1, 1, 2].filter(function (v, i, a) { return v < sheets.length && a.indexOf(v) === i; }).forEach(function (si) {
+var im = new Image();
+im.onload = function () {
+sok[si] = true;
+if (!gotOne) { gotOne = true; vids.forEach(function (v) { try { v.removeAttribute('src'); v.load(); } catch (e) {} }); }
+cur = -1; draw();
+};
+im.onerror = function () { if (!gotOne) fallback(); };
+im.src = sheets[si]; simg[si] = im;
+});
+setTimeout(function () { if (!gotOne) fallback(); }, 12000);
+} else { fallback(); }
 
 /* hero letters, logos, thumbnails, buttons, highlights */
 var kin = [].slice.call(document.querySelectorAll('#hero-name .kin'));
 var hero = byId('hero-name');
-var track = document.querySelector('.logo-track');
 var flips = [].slice.call(document.querySelectorAll('#work article a[class$="-flip"]')).map(function (a) {
 return { a: a, f: [].slice.call(a.querySelectorAll('img[class*="-frame"]')), last: -1 };
 });
@@ -543,11 +547,6 @@ var t = clamp(hp * 1.3 - (i / kin.length) * 0.5, 0, 1);
 var k = l.classList.contains('kin-heavy') ? t : 1 - t;
 l.style.fontVariationSettings = '"wdth" ' + (70 + 55 * k).toFixed(1) + ', "wght" ' + (800 - 550 * k).toFixed(0);
 });
-}
-if (track) {
-var half = track.scrollWidth / 2 || 1;
-var x = (window.scrollY * 0.45) % half;
-track.style.transform = 'translate3d(' + (-x).toFixed(1) + 'px,0,0)';
 }
 if (tiles.length) {
 var best = null, bd = 1e9;
