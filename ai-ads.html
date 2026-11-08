@@ -39,6 +39,20 @@ section[aria-label="Videos"]>div:first-child{animation:pp-up 1s cubic-bezier(0.1
 .slot:hover .slot-cta>span:last-child{transform:translate(3px,-3px)}
 footer a{transition:padding 0.5s cubic-bezier(0.16, 1, 0.3, 1),color 0.3s ease}
 footer a:hover{padding:0 8px}
+
+@media (hover: none) and (pointer: coarse), (max-width: 767px){
+.m-rv{animation:none!important;opacity:0;transform:translateY(36px);transition:opacity 0.8s ease,transform 1s cubic-bezier(0.16, 1, 0.3, 1),border-color 0.4s ease!important}
+.m-rv.in{opacity:1;transform:none}
+.slot:hover{transform:none}
+.slot img,.slot:hover img{transform:translate3d(0,var(--py,0px),0) scale(1.12)!important;transition:none!important}
+.slot.mob-on{border-color:#D64933!important}
+.slot.mob-on .slot-cta{background:#D64933}
+.slot.mob-on svg{transform:scale(1.12) rotate(-8deg)}
+.slot.mob-on>span:first-child>span:last-child{transform:translateX(6px)}
+.slot.mob-on .slot-cta>span:last-child{transform:translate(3px,-3px)}
+section:not([aria-label]){will-change:transform,opacity}
+h1{font-size:min(clamp(56px, 9vw, 140px),11vw)!important;overflow-wrap:break-word}
+}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
 </style>
@@ -142,5 +156,59 @@ footer a:hover{padding:0 8px}
 </footer>
 
 </div>
+<script>
+(function () {
+var MQ = '(hover: none) and (pointer: coarse), (max-width: 767px)';
+if (!(window.matchMedia && window.matchMedia(MQ).matches)) return;
+var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+var slots = [].slice.call(document.querySelectorAll('.slot'));
+var heads = [].slice.call(document.querySelectorAll('section[aria-label="Videos"] > div:first-child'));
+var intro = document.querySelector('section:not([aria-label])');
+var targets = slots.concat(heads);
+targets.forEach(function (el) { el.classList.add('m-rv'); });
+function reveal(el) { el.classList.add('in'); }
+if (reduce || !('IntersectionObserver' in window)) { targets.forEach(reveal); }
+else {
+var io = new IntersectionObserver(function (es) {
+es.forEach(function (e) {
+if (!e.isIntersecting) return;
+var el = e.target, row = 0;
+if (el.classList.contains('slot') && el.parentElement) {
+var top = el.getBoundingClientRect().top;
+[].forEach.call(el.parentElement.children, function (s) { if (s !== el && Math.abs(s.getBoundingClientRect().top - top) < 4 && s.classList.contains('in')) row++; });
+}
+el.style.transitionDelay = (row * 0.08).toFixed(2) + 's';
+reveal(el); io.unobserve(el);
+setTimeout(function () { el.style.transitionDelay = ''; }, 1400);
+});
+}, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+targets.forEach(function (el) { io.observe(el); });
+}
+if (reduce) return;
+var raf = 0;
+function frame() {
+raf = 0;
+var vh = window.innerHeight;
+if (intro) {
+var y = window.scrollY, k = clamp(y / (vh * 0.9), 0, 1);
+intro.style.transform = 'translate3d(0,' + (-y * 0.12).toFixed(1) + 'px,0)';
+intro.style.opacity = (1 - k * 0.45).toFixed(3);
+}
+slots.forEach(function (s) {
+var r = s.getBoundingClientRect();
+if (r.bottom < -40 || r.top > vh + 40) return;
+var img = s.querySelector('img');
+var c = r.top + r.height / 2 - vh / 2;
+if (img) { var h = img.offsetHeight || r.height, lim = h * 0.05; img.style.setProperty('--py', clamp(-c * 0.06, -lim, lim).toFixed(1) + 'px'); }
+s.classList.toggle('mob-on', r.top < vh * 0.6 && r.bottom > vh * 0.4);
+});
+}
+function req() { if (!raf) raf = requestAnimationFrame(frame); }
+window.addEventListener('scroll', req, { passive: true });
+window.addEventListener('resize', req);
+frame();
+})();
+</script>
 </body>
 </html>
