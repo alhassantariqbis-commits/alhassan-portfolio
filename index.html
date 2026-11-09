@@ -85,22 +85,23 @@ html,body{overflow-x:clip}
 #work-cursor>span{position:absolute;left:-58px;top:-58px;width:116px;height:116px;border-radius:50%;background:#380E05;color:#D7D9C5;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Geist Mono',monospace;font-size:12px;line-height:1.3;letter-spacing:0.06em;text-transform:uppercase;transform:scale(0);opacity:0;transition:transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),opacity 0.3s ease;box-shadow:0 0 0 1px rgba(215,217,197,0.35)}
 @media (hover: none),(pointer: coarse){#work-cursor{display:none}}
 
+#reel-tap{display:none;position:absolute;left:50%;top:50%;z-index:3;transform:translate(-50%,-50%);align-items:center;gap:10px;min-height:48px;padding:14px 22px;border:0;border-radius:999px;background:#D64933;color:#380E05;font-family:'Geist Mono',monospace;font-size:13px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer}
+html.reel-needs-tap #reel-tap{display:inline-flex}
 .mob-only,.mob-press{display:none}
 @media (hover: none) and (pointer: coarse), (max-width: 767px){
-html:not(.reel-fallback) .mob-only{display:block}
-html:not(.reel-fallback) #reel-scrub-video,html:not(.reel-fallback) #reel-bg-video{display:none!important}
-#reel-mob-canvas{position:absolute;inset:0;width:100%;height:100%;background:#380E05}
-#reel-mob-bg{position:absolute;top:-40px;left:-40px;width:calc(100% + 80px);height:calc(100% + 80px);filter:blur(18px) saturate(1.15);transform:translateZ(0)}
 .logo-track{zoom:0.66;animation-duration:42s!important}
 .logo-strip{padding:14px 0!important}
 .logo-strip>span{font-size:10px!important;padding-right:16px!important}
 .logo-strip:hover .logo-track{animation-play-state:running}
 .ai-hint{display:none!important}
+.mob-press{--mt:clamp(0, calc((var(--mp, 0) - 0.42) / 0.58), 1);display:flex;position:absolute;left:12px;bottom:12px;height:44px;box-sizing:border-box;align-items:center;gap:10px;padding:0 18px 0 4px;border-radius:999px;background:#D64933;color:#380E05;font-family:'Geist Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;box-shadow:0 0 0 1px rgba(215,217,197,0.7),0 10px 24px rgba(56,14,5,0.35);opacity:clamp(0, calc(var(--mp, 0) * 5), 1);clip-path:inset(0 calc((1 - var(--mp, 0)) * (100% - 44px)) 0 0 round 999px);transform:translateY(calc((1 - var(--mp, 0)) * 18px)) scale(calc(0.86 + var(--mp, 0) * 0.14));transform-origin:22px 50%}
+.mob-press .mp-dot{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:#380E05;color:#D7D9C5;display:flex;align-items:center;justify-content:center;font-size:15px;transform:rotate(calc((1 - var(--mp, 0)) * -135deg))}
+.mob-press .mp-txt{display:block;overflow:hidden;padding:2px 0}
+.mob-press .mp-txt>span{display:block;transform:translateY(calc((1 - var(--mt)) * 115%));opacity:var(--mt)}
+a[class$="-flip"]:active .mob-press{background:#D7D9C5}
 #work article a[class$="-flip"] [class*="-frame"]{animation:none!important;opacity:0!important}
 #work article a[class$="-flip"] [class*="-frame"].on{opacity:1!important}
 #work article:hover a[class$="-flip"]{transform:none}
-.mob-press{display:flex;position:absolute;right:12px;bottom:12px;width:116px;height:116px;border-radius:50%;background:#380E05;color:#D7D9C5;align-items:center;justify-content:center;text-align:center;font-family:'Geist Mono',monospace;font-size:11px;line-height:1.35;letter-spacing:0.06em;text-transform:uppercase;box-shadow:0 0 0 1px rgba(215,217,197,0.35);transform:scale(var(--mp,0)) rotate(calc((1 - var(--mp,0)) * -35deg));transform-origin:center}
-.mob-press:active{background:#D64933}
 article.mob-on h3[style*="font-weight: 800"]{font-weight:250!important;font-stretch:125%!important}
 article.mob-on h3[style*="font-weight: 250"]{font-weight:800!important;font-stretch:70%!important}
 article.mob-on a[href^="Project-"]:not([aria-label]){padding-left:14px}
@@ -190,19 +191,18 @@ article.mob-on a[href^="Project-"]:not([aria-label]){padding-left:14px}
 </section>
 
 <section id="showreel" aria-label="Showreel" style="background: #380E05; color: #D7D9C5; position: relative">
-<div id="reel-scrub-wrap" style="position: relative; height: 320vh">
+<div id="reel-scrub-wrap" style="position: relative; height: 170vh">
 <div style="position: sticky; top: 0; height: 100vh; overflow: hidden; box-sizing: border-box; padding: clamp(24px, 4vh, 48px) clamp(16px, 4vw, 48px); display: flex; flex-direction: column; justify-content: center; gap: clamp(16px, 3vh, 32px)">
 <video id="reel-bg-video" src="video/showreel-bg-blur.mp4" muted="" playsinline="" preload="auto" aria-hidden="true" style="position: absolute; top: -60px; left: -60px; width: calc(100% + 120px); height: calc(100% + 120px); object-fit: cover; filter: blur(30px) saturate(1.15); pointer-events: none"></video>
-<canvas id="reel-mob-bg" class="mob-only" width="64" height="36" aria-hidden="true"></canvas>
 <span aria-hidden="true" style="position: absolute; inset: 0; background: rgba(56, 14, 5, 0.5); pointer-events: none"></span>
 <div style="position: relative; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px">
 <h2 style="margin: 0; display: flex; flex-wrap: wrap; column-gap: 0.25em; font-size: clamp(48px, 7vw, 104px); line-height: 0.86; text-transform: uppercase; letter-spacing: -0.01em"><span style="font-weight: 800; font-stretch: 70%; color: #D64933">Show</span><span style="font-weight: 250; font-stretch: 125%">reel</span></h2>
-<span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase">(2026) ↓ Scroll to play</span>
+<span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase">(2026)</span>
 </div>
 <div id="reel-frame" style="position: relative; align-self: center; width: min(100%, calc((100vh - 240px) * 16 / 9)); aspect-ratio: 16 / 9; clip-path: inset(14% 22% round 16px); will-change: clip-path; background: #000000; box-shadow: 0 0 0 1px rgba(215, 217, 197, 0.25)">
-<canvas id="reel-mob-canvas" class="mob-only" aria-hidden="true" data-sprites="reel-1.jpg,reel-2.jpg,reel-3.jpg,reel-4.jpg"></canvas>
+<button id="reel-tap" type="button" aria-label="Play the showreel">▶ Play showreel</button>
 <div id="reel-scrub-layer">
-<video id="reel-scrub-video" src="video/showreel-scroll.mp4" poster="video/showreel-poster.jpg" muted="" playsinline="" preload="auto" aria-label="Showreel intro, plays as you scroll" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none"></video>
+<video id="reel-scrub-video" src="video/showreel-scroll.mp4" poster="video/showreel-poster.jpg" muted="" playsinline="" preload="auto" aria-label="Showreel intro" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none"></video>
 <div id="reel-cta" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 24px; box-sizing: border-box; text-align: center; transition: opacity 0.45s ease, transform 0.45s ease; opacity: 0; transform: translateY(16px); pointer-events: none">
 <a href="https://youtu.be/-N_in23mMnc" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; text-decoration: none; box-sizing: border-box; min-height: 56px; padding: 18px 28px; border: 0; background: #D64933; color: #380E05; font-family: 'Geist Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer">To watch the full showreel ↗</a>
 <span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #D7D9C5">Scroll more to see my work ↓</span>
@@ -272,7 +272,7 @@ article.mob-on a[href^="Project-"]:not([aria-label]){padding-left:14px}
 <img class="fp-frame" src="frames/full-production/fp47.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation-delay: 4.6s">
 </span>
 <span class="ai-hint" style="position: absolute; left: 12px; bottom: 12px; padding: 6px 8px; background: #D7D9C5; font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #380E05; transition: opacity 0.2s">Hover to play · 47 shots</span>
-<span class="mob-press" aria-hidden="true"><span>Press to see<br>the full project ↗</span></span>
+<span class="mob-press" aria-hidden="true"><span class="mp-dot">↗</span><span class="mp-txt"><span>Press to see the full project</span></span></span>
 </a>
 <div style="flex: 1 1 320px; min-width: 0; background: #D7D9C5; color: #380E05; padding: 16px clamp(20px, 3vw, 40px) 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; flex-direction: column; gap: 20px">
@@ -301,7 +301,7 @@ article.mob-on a[href^="Project-"]:not([aria-label]){padding-left:14px}
 <img class="ai-frame" src="frames/ai-ads/ai10.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation-delay: 1.08s">
 </span>
 <span class="ai-hint" style="position: absolute; left: 12px; bottom: 12px; padding: 6px 8px; background: #D7D9C5; font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #380E05; transition: opacity 0.2s">Hover to play · 10 ads</span>
-<span class="mob-press" aria-hidden="true"><span>Press to see<br>the full project ↗</span></span>
+<span class="mob-press" aria-hidden="true"><span class="mp-dot">↗</span><span class="mp-txt"><span>Press to see the full project</span></span></span>
 </a>
 <div style="flex: 1 1 320px; min-width: 0; background: #D7D9C5; color: #380E05; padding: 16px clamp(20px, 3vw, 40px) 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; flex-direction: column; gap: 20px">
@@ -325,7 +325,7 @@ article.mob-on a[href^="Project-"]:not([aria-label]){padding-left:14px}
 <img class="ttl-frame" src="frames/ttls/ttl05.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation-delay: 0.8s">
 </span>
 <span class="ai-hint" style="position: absolute; left: 12px; bottom: 12px; padding: 6px 8px; background: #D7D9C5; font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #380E05; transition: opacity 0.2s">Hover to play · 5 shots</span>
-<span class="mob-press" aria-hidden="true"><span>Press to see<br>the full project ↗</span></span>
+<span class="mob-press" aria-hidden="true"><span class="mp-dot">↗</span><span class="mp-txt"><span>Press to see the full project</span></span></span>
 </a>
 <div style="flex: 1 1 320px; min-width: 0; background: #D7D9C5; color: #380E05; padding: 16px clamp(20px, 3vw, 40px) 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; flex-direction: column; gap: 20px">
@@ -358,7 +358,7 @@ article.mob-on a[href^="Project-"]:not([aria-label]){padding-left:14px}
 <img class="ugc-frame" src="frames/ugcs/ugc14.jpg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation-delay: 1.3s">
 </span>
 <span class="ai-hint" style="position: absolute; left: 12px; bottom: 12px; padding: 6px 8px; background: #D7D9C5; font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #380E05; transition: opacity 0.2s">Hover to play · 14 UGCs</span>
-<span class="mob-press" aria-hidden="true"><span>Press to see<br>the full project ↗</span></span>
+<span class="mob-press" aria-hidden="true"><span class="mp-dot">↗</span><span class="mp-txt"><span>Press to see the full project</span></span></span>
 </a>
 <div style="flex: 1 1 320px; min-width: 0; background: #D7D9C5; color: #380E05; padding: 16px clamp(20px, 3vw, 40px) 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; flex-direction: column; gap: 20px">
@@ -457,54 +457,6 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 function byId(i) { return document.getElementById(i); }
 
-/* showreel: frames packed in sprite sheets, drawn to canvas; falls back to the video if sheets fail */
-var cv = byId('reel-mob-canvas'), bg = byId('reel-mob-bg'), wrap = byId('reel-scrub-wrap');
-var vids = ['reel-scrub-video', 'reel-bg-video'].map(byId).filter(Boolean);
-vids.forEach(function (v) { try { v.pause(); v.preload = 'none'; } catch (e) {} });
-var sheets = cv && cv.getAttribute('data-sprites') ? cv.getAttribute('data-sprites').split(',') : [];
-var COLS = 6, ROWS = 4, PER = COLS * ROWS, N = sheets.length * PER, FW = 720, FH = 405;
-var simg = [], sok = [], cur = -1, want = 0, failed = false, gotOne = false;
-var ctx = cv ? cv.getContext('2d') : null, bctx = bg ? bg.getContext('2d') : null;
-function fallback() {
-if (failed || gotOne) return; failed = true; N = 0;
-window.__alhMob = false;
-document.documentElement.classList.add('reel-fallback');
-vids.forEach(function (v) { try { v.preload = 'auto'; v.load(); var p = v.play(); if (p && p.then) p.then(function () { v.pause(); window.dispatchEvent(new Event('scroll')); }).catch(function () {}); } catch (e) {} });
-}
-function has(j) { return j >= 0 && j < N && sok[Math.floor(j / PER)]; }
-function nearest(i) { for (var d = 0; d < N; d++) { if (has(i - d)) return i - d; if (has(i + d)) return i + d; } return -1; }
-function fit() {
-if (!cv) return;
-var dpr = Math.min(window.devicePixelRatio || 1, 2);
-var w = Math.round(cv.clientWidth * dpr), h = Math.round(cv.clientHeight * dpr);
-if (w && h && (cv.width !== w || cv.height !== h)) { cv.width = w; cv.height = h; cur = -1; }
-}
-function paint(c, j) {
-var im = simg[Math.floor(j / PER)], k = j % PER;
-var sx = (k % COLS) * FW, sy = Math.floor(k / COLS) * FH;
-var cw = c.canvas.width, ch = c.canvas.height; if (!cw || !ch) return;
-var s = Math.max(cw / FW, ch / FH), w = FW * s, h = FH * s;
-c.drawImage(im, sx, sy, FW, FH, (cw - w) / 2, (ch - h) / 2, w, h);
-}
-function draw() {
-if (!ctx || !N) return;
-var j = nearest(want); if (j < 0 || j === cur) return;
-cur = j; paint(ctx, j); if (bctx) paint(bctx, j);
-}
-if (sheets.length && ctx) {
-[0, sheets.length - 1, 1, 2].filter(function (v, i, a) { return v < sheets.length && a.indexOf(v) === i; }).forEach(function (si) {
-var im = new Image();
-im.onload = function () {
-sok[si] = true;
-if (!gotOne) { gotOne = true; vids.forEach(function (v) { try { v.removeAttribute('src'); v.load(); } catch (e) {} }); }
-cur = -1; draw();
-};
-im.onerror = function () { if (!gotOne) fallback(); };
-im.src = sheets[si]; simg[si] = im;
-});
-setTimeout(function () { if (!gotOne) fallback(); }, 12000);
-} else { fallback(); }
-
 /* hero letters, logos, thumbnails, buttons, highlights */
 var kin = [].slice.call(document.querySelectorAll('#hero-name .kin'));
 var hero = byId('hero-name');
@@ -521,12 +473,6 @@ var raf = 0;
 function frame() {
 raf = 0;
 var vh = window.innerHeight;
-if (wrap && N) {
-var r = wrap.getBoundingClientRect(), total = r.height - vh;
-var p = total > 0 ? clamp(-r.top / total, 0, 1) : 0;
-var play = clamp((p - 0.2) / 0.65, 0, 1);
-want = Math.round(play * (N - 1)); fit(); draw();
-}
 flips.forEach(function (o) {
 var r = o.a.getBoundingClientRect(), n = o.f.length; if (!n) return;
 if (r.bottom < -50 || r.top > vh + 50) return;
@@ -534,7 +480,7 @@ var range = vh + r.height, prog = clamp((vh - r.top) / range, 0, 0.9999);
 var steps = Math.max(n, Math.round(range / 45));
 var i = Math.floor(prog * steps) % n;
 if (i !== o.last) { if (o.f[o.last]) o.f[o.last].classList.remove('on'); o.f[i].classList.add('on'); o.last = i; }
-var e = clamp((vh - r.top) / (vh * 0.55), 0, 1); e = 1 - Math.pow(1 - e, 3);
+var e = clamp((vh - r.bottom - 8) / (vh * 0.42), 0, 1); e = 1 - Math.pow(1 - e, 2);
 o.a.style.setProperty('--mp', e.toFixed(3));
 });
 if (reduce) return;
@@ -561,10 +507,10 @@ talk.style.fontWeight = String(Math.round(800 - 500 * tp));
 }
 function req() { if (!raf) raf = requestAnimationFrame(frame); }
 window.addEventListener('scroll', req, { passive: true });
-window.addEventListener('resize', function () { cur = -1; req(); });
-window.addEventListener('orientationchange', function () { cur = -1; setTimeout(req, 250); });
-window.addEventListener('pageshow', function () { cur = -1; req(); });
-document.addEventListener('visibilitychange', function () { if (!document.hidden) { cur = -1; req(); } });
+window.addEventListener('resize', req);
+window.addEventListener('orientationchange', function () { setTimeout(req, 250); });
+window.addEventListener('pageshow', req);
+
 frame();
 })();
 (function () {
@@ -621,15 +567,10 @@ var wrap = $('reel-scrub-wrap'); if (!wrap) return;
 var r = wrap.getBoundingClientRect();
 var total = r.height - window.innerHeight;
 var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
-var c = Math.min(1, p / 0.2);
+var c = Math.min(1, p / 0.5);
 var fr = $('reel-frame');
 if (fr) { var e = 1 - Math.pow(1 - c, 3); fr.style.clipPath = 'inset(' + (14 * (1 - e)).toFixed(2) + '% ' + (22 * (1 - e)).toFixed(2) + '% round ' + (16 * (1 - e)).toFixed(1) + 'px)'; }
-var play = Math.min(1, Math.max(0, (p - 0.2) / 0.65));
-['reel-scrub-video', 'reel-bg-video'].forEach(function (id) {
-var v = $(id); if (!v || window.__alhMob || (state.showFull && id === 'reel-scrub-video')) return;
-var d = v.duration || 10.66; var t = play * (d - 0.04);
-if (Math.abs(v.currentTime - t) > 0.01) { try { v.currentTime = t; } catch (err) {} }
-});
+reelTick(c, r);
 var st = $('about-statement'); var ab = $('about');
 if (st && ab) {
 var ws = st.querySelectorAll('.sw'); var ar = ab.getBoundingClientRect();
@@ -639,14 +580,33 @@ var sp = Math.min(1, raw / 0.85);
 var lit = sp * ws.length;
 for (var i = 0; i < ws.length; i++) { var o = Math.min(1, Math.max(0.14, 0.14 + (lit - i) * 0.86)); ws[i].style.opacity = o.toFixed(3); }
 }
-setCta(play >= 0.999 && !state.showFull);
 });
 }
+var rs = 'idle';
+function reelVids() { return ['reel-scrub-video', 'reel-bg-video'].map($).filter(Boolean); }
+function reelPlay() {
+rs = 'playing';
+document.documentElement.classList.remove('reel-needs-tap');
+reelVids().forEach(function (v) { v.muted = true; v.playsInline = true; var pr = v.play(); if (pr && pr.catch) pr.catch(function () { if (v.id === 'reel-scrub-video') { rs = 'blocked'; document.documentElement.classList.add('reel-needs-tap'); } }); });
+}
+function reelTick(c, r) {
+var vh = window.innerHeight;
+if (r.top >= vh * 0.98 || (c <= 0.02 && r.top > 0)) {
+if (rs !== 'idle') { reelVids().forEach(function (v) { try { v.pause(); v.currentTime = 0; } catch (e) {} }); rs = 'idle'; document.documentElement.classList.remove('reel-needs-tap'); setCta(false); }
+return;
+}
+if (r.bottom <= 0) { if (rs === 'playing') { reelVids().forEach(function (v) { v.pause(); }); rs = 'paused'; } return; }
+if (rs === 'idle' && c >= 0.55) reelPlay();
+else if (rs === 'paused') reelPlay();
+}
+(function () {
+var rv = $('reel-scrub-video');
+if (rv) rv.addEventListener('ended', function () { rs = 'done'; var b = $('reel-bg-video'); if (b) b.pause(); setCta(true); });
+var rt = $('reel-tap'); if (rt) rt.addEventListener('click', reelPlay);
+})();
 function prime(id) {
-var v = $(id); if (!v || window.__alhMob) return;
+var v = $(id); if (!v) return;
 v.muted = true;
-var pr = v.play && v.play();
-if (pr && pr.then) pr.then(function () { v.pause(); onScroll(); }).catch(function () {});
 v.addEventListener('loadedmetadata', onScroll);
 }
 setTimeout(function () { var h = $('hero-name'); if (h) h.classList.add('is-in'); }, 80);
